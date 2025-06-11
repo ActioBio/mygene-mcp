@@ -4,47 +4,47 @@ A Model Context Protocol (MCP) server that exposes the [MyGene.info](https://myg
 
 ## Features
 
-- **Gene Search**: Query genes by symbol, name, or other identifiers
-- **Gene Annotations**: Retrieve detailed gene information
-- **Batch Queries**: Process multiple genes in a single request
-- **Genomic Interval Queries**: Find genes by chromosome position
-- **Metadata Access**: Get API metadata and available fields
-- **Species Support**: Query genes from multiple species
+### Core Capabilities
+- **Gene Search**: Query genes by symbol, name, Entrez ID, Ensembl ID, or other identifiers
+- **Gene Annotations**: Retrieve comprehensive gene information from multiple sources
+- **Expression Queries**: Search genes by tissue expression or retrieve expression profiles
+- **Pathway Queries**: Find genes in biological pathways or get pathway memberships
+- **GO Annotations**: Search by GO terms or retrieve GO annotations with evidence codes
+- **Disease Associations**: Find disease-associated genes or get gene-disease links
+- **Drug/Chemical Interactions**: Search genes by drug/chemical or get interaction data
+- **Ortholog/Homology**: Find orthologs across species or search homologous genes
+- **Variant Information**: Retrieve genetic variants and clinical significance
+- **Batch Operations**: Process up to 1000 genes in a single request
+- **Genomic Interval Search**: Find genes by chromosomal coordinates
+- **Advanced Queries**: Build complex queries with boolean logic and filters
+- **Data Export**: Export gene lists in TSV, CSV, JSON, or XML formats
 
-## Data Available from MyGene.info
-
-MyGene MCP Server provides access to comprehensive gene data aggregated in real-time from 30+ authoritative sources:
-
-### Core Gene Information
-- **Gene identifiers**: Entrez Gene, Ensembl, UniProt, RefSeq, HGNC, MGI, RGD, and more
-- **Basic annotations**: Official symbol, name, aliases, type of gene, genomic location
-- **Cross-references**: Direct mappings between all major gene databases
-- **Species coverage**: Human, mouse, rat, zebrafish, fly, worm, yeast, and 20,000+ other species
-
-### Expression Data
-- **Human Protein Atlas (HPA)**: Tissue-specific expression, subcellular localization
-- **GTEx**: Gene expression across human tissues
-- **BioGPS**: Expression profiles across cell types and tissues
-- **ExAC**: Expression data from exome aggregation
-
-### Functional Annotations
-- **Gene Ontology (GO)**: Biological process, molecular function, cellular component with evidence codes
-- **Pathways**: KEGG, Reactome, WikiPathways, BioCarta, PID pathway memberships
-- **Protein domains**: InterPro, Pfam, SMART domain annotations
-- **Homology**: Orthologs and paralogs from HomoloGene, Ensembl Compara, PANTHER
-
-### Clinical and Disease Data
-- **Disease associations**: DisGeNET, OMIM, ClinVar disease links
-- **Genetic variants**: ClinVar variants with clinical significance
-- **Pharmacogenomics**: PharmGKB drug-gene interactions
-- **Chemical interactions**: ChEBI, ChEMBL, DrugBank compound associations
-
-### Advanced Query Capabilities
-- **Powerful search syntax**: Wildcards (`CDK*`), field queries (`go.MF:kinase`), boolean logic (`pathway.kegg.name:"cell cycle" AND taxid:9606`)
-- **Batch operations**: Query up to 1000 genes in a single request
-- **Genomic interval search**: Find genes by chromosomal coordinates
-- **Complex filters**: Combine multiple criteria (species, gene type, annotation presence)
-- **Data export**: Export results in TSV, CSV, JSON, or XML formats
+### Data Sources
+- **NCBI**: Entrez Gene, RefSeq, HomoloGene
+- **Ensembl**: Gene annotations, homology data
+- **UniProt**: Protein annotations, GO terms
+- **Human Protein Atlas (HPA)**: Tissue expression, subcellular localization
+- **GTEx**: Gene expression in human tissues
+- **BioGPS**: Gene expression profiles
+- **ExAC**: Exome aggregation data
+- **KEGG**: Pathways and disease associations
+- **Reactome**: Biological pathways
+- **WikiPathways**: Community pathways
+- **BioCarta**: Pathway diagrams
+- **NetPath**: Signal transduction pathways
+- **PID**: Pathway Interaction Database
+- **Gene Ontology**: Functional annotations
+- **DisGeNET**: Disease-gene associations
+- **ClinVar**: Clinical variants
+- **OMIM**: Genetic disorders
+- **PharmGKB**: Pharmacogenomics
+- **DrugBank**: Drug targets
+- **ChEMBL**: Bioactive compounds
+- **ChEBI**: Chemical entities
+- **InterPro**: Protein families and domains
+- **Pfam**: Protein families
+- **SMART**: Protein domains
+- **PANTHER**: Gene function classification
 
 ## Installation
 
