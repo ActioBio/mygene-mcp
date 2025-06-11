@@ -127,3 +127,235 @@ def sample_species_facets():
             }
         }
     }
+
+
+@pytest.fixture
+def sample_expression_data():
+    """Sample expression data."""
+    return {
+        "hpa": {
+            "tissue": [
+                {"name": "brain", "level": "high"},
+                {"name": "liver", "level": "medium"},
+                {"name": "kidney", "level": "low"}
+            ],
+            "subcellular_location": ["nucleus", "cytoplasm"],
+            "rna_tissue_specificity": {
+                "specificity": "tissue enhanced",
+                "distribution": "detected in all"
+            }
+        },
+        "gtex": {
+            "brain": 45.2,
+            "liver": 23.8,
+            "kidney": 12.5
+        },
+        "biogps": {
+            "104": 1234.5,
+            "105": 2345.6
+        }
+    }
+
+
+@pytest.fixture
+def sample_pathway_data():
+    """Sample pathway data."""
+    return {
+        "kegg": [
+            {"id": "hsa04110", "name": "Cell cycle"},
+            {"id": "hsa04115", "name": "p53 signaling pathway"}
+        ],
+        "reactome": [
+            {"id": "R-HSA-69278", "name": "Cell Cycle, Mitotic"},
+            {"id": "R-HSA-69620", "name": "Cell Cycle Checkpoints"}
+        ],
+        "wikipathways": [
+            {"id": "WP179", "name": "Cell cycle"}
+        ]
+    }
+
+
+@pytest.fixture
+def sample_go_data():
+    """Sample GO annotation data."""
+    return {
+        "BP": [
+            {
+                "id": "GO:0006468",
+                "term": "protein phosphorylation",
+                "evidence": "IDA",
+                "qualifier": [""],
+                "pubmed": [12345678, 23456789]
+            },
+            {
+                "id": "GO:0007049",
+                "term": "cell cycle",
+                "evidence": "TAS",
+                "qualifier": [""]
+            }
+        ],
+        "MF": [
+            {
+                "id": "GO:0004672",
+                "term": "protein kinase activity",
+                "evidence": "IDA",
+                "qualifier": ["enables"]
+            }
+        ],
+        "CC": [
+            {
+                "id": "GO:0005634",
+                "term": "nucleus",
+                "evidence": "IDA",
+                "qualifier": ["located_in"]
+            }
+        ]
+    }
+
+
+@pytest.fixture
+def sample_disease_data():
+    """Sample disease association data."""
+    return {
+        "disgenet": {
+            "diseases": [
+                {
+                    "disease_id": "C0006142",
+                    "disease_name": "Breast Cancer",
+                    "score": 0.9,
+                    "source": "BEFREE",
+                    "pmid": [12345678]
+                },
+                {
+                    "disease_id": "C0029925",
+                    "disease_name": "Ovarian Cancer",
+                    "score": 0.85,
+                    "source": "CURATED"
+                }
+            ]
+        },
+        "clinvar": {
+            "rcv": [
+                {
+                    "accession": {"accession": "RCV000048420"},
+                    "conditions": {
+                        "name": "Hereditary breast and ovarian cancer syndrome",
+                        "identifiers": [{"db": "MedGen", "value": "C2676676"}]
+                    },
+                    "clinical_significance": "Pathogenic",
+                    "last_evaluated": "2023-06-01"
+                }
+            ]
+        },
+        "omim": {
+            "omim_id": "114480",
+            "name": "BREAST CANCER 1 GENE",
+            "inheritance": "Autosomal dominant"
+        }
+    }
+
+
+@pytest.fixture
+def sample_chemical_data():
+    """Sample chemical/drug interaction data."""
+    return {
+        "pharmgkb": {
+            "chemical": [
+                {
+                    "name": "tamoxifen",
+                    "id": "PA451581",
+                    "type": "substrate"
+                },
+                {
+                    "name": "paclitaxel",
+                    "id": "PA450761",
+                    "type": "substrate"
+                }
+            ]
+        },
+        "chembl": {
+            "target_component": [
+                {
+                    "target_chembl_id": "CHEMBL1824",
+                    "component_type": "PROTEIN",
+                    "accession": "P11511"
+                }
+            ]
+        },
+        "drugbank": [
+            {
+                "id": "DB00675",
+                "name": "tamoxifen",
+                "groups": ["approved", "investigational"]
+            }
+        ]
+    }
+
+
+@pytest.fixture
+def sample_variant_data():
+    """Sample variant data."""
+    return {
+        "clinvar": {
+            "rcv": [
+                {
+                    "accession": {"accession": "RCV000048420"},
+                    "title": "NM_007294.3(BRCA1):c.5266dup (p.Gln1756fs)",
+                    "clinical_significance": "Pathogenic",
+                    "last_evaluated": "2023-06-01",
+                    "review_status": "reviewed by expert panel",
+                    "conditions": {
+                        "name": "Hereditary breast and ovarian cancer syndrome"
+                    },
+                    "measure_set": {
+                        "measure": {
+                            "type": "Duplication",
+                            "name": "c.5266dup"
+                        }
+                    }
+                }
+            ]
+        },
+        "snpeff": {
+            "ann": [
+                {
+                    "effect": "frameshift_variant",
+                    "putative_impact": "HIGH",
+                    "gene_name": "BRCA1",
+                    "feature_type": "transcript"
+                }
+            ]
+        }
+    }
+
+
+@pytest.fixture
+def sample_homology_data():
+    """Sample homology data."""
+    return {
+        "homologene": {
+            "id": 5276,
+            "genes": [
+                [9606, 672],    # Human BRCA1
+                [10090, 12189], # Mouse Brca1
+                [10116, 497672] # Rat Brca1
+            ]
+        },
+        "ensembl": {
+            "homologene": [
+                {
+                    "id": "ENSMUSG00000017146",
+                    "species": "mouse",
+                    "type": "ortholog_one2one"
+                }
+            ]
+        },
+        "pantherdb": {
+            "ortholog": [
+                {
+                    "id": "PTHR13763:SF184",
+                    "species": "MOUSE"
+                }
+            ]
+        }
+    }

@@ -16,7 +16,16 @@ from .tools import (
     ANNOTATION_TOOLS, AnnotationApi,
     BATCH_TOOLS, BatchApi,
     INTERVAL_TOOLS, IntervalApi,
-    METADATA_TOOLS, MetadataApi
+    METADATA_TOOLS, MetadataApi,
+    EXPRESSION_TOOLS, ExpressionApi,
+    PATHWAY_TOOLS, PathwayApi,
+    GO_TOOLS, GOApi,
+    HOMOLOGY_TOOLS, HomologyApi,
+    DISEASE_TOOLS, DiseaseApi,
+    VARIANT_TOOLS, VariantApi,
+    CHEMICAL_TOOLS, ChemicalApi,
+    ADVANCED_TOOLS, AdvancedQueryApi,
+    EXPORT_TOOLS, ExportApi
 )
 
 logger = logging.getLogger(__name__)
@@ -28,13 +37,24 @@ ALL_TOOLS = (
     ANNOTATION_TOOLS +
     BATCH_TOOLS +
     INTERVAL_TOOLS +
-    METADATA_TOOLS
+    METADATA_TOOLS +
+    EXPRESSION_TOOLS +
+    PATHWAY_TOOLS +
+    GO_TOOLS +
+    HOMOLOGY_TOOLS +
+    DISEASE_TOOLS +
+    VARIANT_TOOLS +
+    CHEMICAL_TOOLS +
+    ADVANCED_TOOLS +
+    EXPORT_TOOLS
 )
 
 # Create API class mapping
 API_CLASS_MAP = {
     # Query tools
     "query_genes": QueryApi,
+    "search_by_field": QueryApi,
+    "get_field_statistics": QueryApi,
     # Annotation tools
     "get_gene_annotation": AnnotationApi,
     # Batch tools
@@ -46,6 +66,31 @@ API_CLASS_MAP = {
     "get_mygene_metadata": MetadataApi,
     "get_available_fields": MetadataApi,
     "get_species_list": MetadataApi,
+    # Expression tools
+    "query_genes_by_expression": ExpressionApi,
+    "get_gene_expression_profile": ExpressionApi,
+    # Pathway tools
+    "query_genes_by_pathway": PathwayApi,
+    "get_gene_pathways": PathwayApi,
+    # GO tools
+    "query_genes_by_go_term": GOApi,
+    "get_gene_go_annotations": GOApi,
+    # Homology tools
+    "get_gene_orthologs": HomologyApi,
+    "query_homologous_genes": HomologyApi,
+    # Disease tools
+    "query_genes_by_disease": DiseaseApi,
+    "get_gene_disease_associations": DiseaseApi,
+    # Variant tools
+    "get_gene_variants": VariantApi,
+    # Chemical tools
+    "query_genes_by_chemical": ChemicalApi,
+    "get_gene_chemical_interactions": ChemicalApi,
+    # Advanced tools
+    "build_complex_query": AdvancedQueryApi,
+    "query_with_filters": AdvancedQueryApi,
+    # Export tools
+    "export_gene_list": ExportApi,
 }
 
 
@@ -54,7 +99,7 @@ class MyGeneMcpServer:
     
     def __init__(self):
         self.server_name = "mygene-mcp"
-        self.server_version = "0.1.0"
+        self.server_version = "0.2.0"
         self.mcp_server = Server(self.server_name, self.server_version)
         self.client = MyGeneClient()
         self._api_instances: Dict[Type, Any] = {}
@@ -124,9 +169,9 @@ def main():
         asyncio.run(server.run())
     except KeyboardInterrupt:
         logger.info("Server interrupted by user.")
-    finally:
-        asyncio.run(server.client.close())
-        logger.info("Server shutdown complete.")
+    except Exception as e:
+        logger.error(f"Server error: {e}")
+        raise
 
 
 if __name__ == "__main__":

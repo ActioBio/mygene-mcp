@@ -5,15 +5,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mygene-mcp"
-version = "0.1.0"
-description = "Model Context Protocol server for MyGene.info API"
+version = "0.2.0"
+description = "Model Context Protocol server for MyGene.info API with comprehensive gene data tools"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Zhong Ren", email = "zhong.ren@hotmail.com"}
 ]
-keywords = ["mcp", "mygene", "bioinformatics", "gene", "annotation"]
+keywords = ["mcp", "mygene", "bioinformatics", "gene", "annotation", "expression", "pathway", "disease"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

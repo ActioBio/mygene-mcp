@@ -248,3 +248,196 @@ class TestQueryTools:
         assert result["success"] is True
         assert result["total"] == 0
         assert len(result["hits"]) == 0
+    
+    @pytest.mark.asyncio
+    async def test_search_by_field_single(self, mock_client):
+        """Test search by single field."""
+        mock_client.get.return_value = {
+            "total": 5,
+            "took": 3,
+            "hits": [{"interpro": "IPR000001"}]
+        }
+        
+        api = QueryApi()
+        result = await api.search_by_field(
+            mock_client,
+            field_queries={"interpro": "IPR000001"}
+        )
+        
+        assert result["success"] is True
+        assert result["total"] == 5
+        
+        # Check that query was built correctly (no quotes for values without spaces)
+        expected_q = 'interpro:IPR000001'
+        mock_client.get.assert_called_with(
+            "query",
+            params={
+                "q": expected_q,
+                "fields": "symbol,name,taxid,entrezgene",
+                "size": 10
+            }
+        )
+    
+    @pytest.mark.asyncio
+    async def test_search_by_field_multiple_and(self, mock_client):
+        """Test search by multiple fields with AND."""
+        mock_client.get.return_value = {
+            "total": 2,
+            "took": 5,
+            "hits": []
+        }
+        
+        api = QueryApi()
+        result = await api.search_by_field(
+            mock_client,
+            field_queries={
+                "interpro": "IPR000001",
+                "pfam": "PF00001"
+            },
+            operator="AND"
+        )
+        
+        assert result["success"] is True
+        
+        # Verify the query construction (no quotes for values without spaces)
+        call_args = mock_client.get.call_args[1]["params"]["q"]
+        assert "interpro:IPR000001" in call_args
+        assert "pfam:PF00001" in call_args
+        assert " AND " in call_args
+
+    @pytest.mark.asyncio
+    async def test_search_by_field_multiple_or(self, mock_client):
+        """Test search by multiple fields with OR."""
+        mock_client.get.return_value = {
+            "total": 10,
+            "took": 4,
+            "hits": []
+        }
+        
+        api = QueryApi()
+        result = await api.search_by_field(
+            mock_client,
+            field_queries={
+                "symbol": "CDK2",
+                "ensembl.gene": "ENSG00000123374"
+            },
+            operator="OR"
+        )
+        
+        assert result["success"] is True
+        
+        # Verify the query construction (no quotes for values without spaces)
+        call_args = mock_client.get.call_args[1]["params"]["q"]
+        assert "symbol:CDK2" in call_args
+        assert "ensembl.gene:ENSG00000123374" in call_args
+        assert " OR " in call_args
+    
+    @pytest.mark.asyncio
+    async def test_search_by_field_with_spaces(self, mock_client):
+        """Test search with values containing spaces."""
+        mock_client.get.return_value = {
+            "total": 3,
+            "took": 2,
+            "hits": []
+        }
+        
+        api = QueryApi()
+        result = await api.search_by_field(
+            mock_client,
+            field_queries={
+                "go.BP.term": "cell cycle",
+                "name": "cyclin dependent kinase"
+            }
+        )
+        
+        assert result["success"] is True
+        
+        # Check that values with spaces are quoted
+        call_args = mock_client.get.call_args[1]["params"]["q"]
+        assert 'go.BP.term:"cell cycle"' in call_args
+        assert 'name:"cyclin dependent kinase"' in call_args
+    
+    @pytest.mark.asyncio
+    async def test_get_field_statistics(self, mock_client):
+        """Test getting field statistics."""
+        mock_client.get.return_value = {
+            "total": 40000,
+            "took": 15,
+            "hits": [],
+            "facets": {
+                "type_of_gene": {
+                    "total": 10,
+                    "terms": [
+                        {"term": "protein-coding", "count": 20000},
+                        {"term": "ncRNA", "count": 5000},
+                        {"term": "pseudo", "count": 3000}
+                    ]
+                }
+            }
+        }
+        
+        api = QueryApi()
+        result = await api.get_field_statistics(
+            mock_client,
+            field="type_of_gene"
+        )
+        
+        assert result["success"] is True
+        assert result["field"] == "type_of_gene"
+        assert result["total_genes"] == 40000
+        assert len(result["top_values"]) == 3
+        
+        # Check percentages
+        assert result["top_values"][0]["value"] == "protein-coding"
+        assert result["top_values"][0]["count"] == 20000
+        assert result["top_values"][0]["percentage"] == 50.0
+        
+        mock_client.get.assert_called_with(
+            "query",
+            params={
+                "q": "*",
+                "facets": "type_of_gene",
+                "facet_size": 100,
+                "size": 0
+            }
+        )
+    
+    @pytest.mark.asyncio
+    async def test_get_field_statistics_with_species(self, mock_client):
+        """Test field statistics with species filter."""
+        mock_client.get.return_value = {
+            "total": 20000,
+            "took": 10,
+            "hits": [],
+            "facets": {
+                "go.CC": {
+                    "total": 50,
+                    "terms": [
+                        {"term": "nucleus", "count": 5000},
+                        {"term": "cytoplasm", "count": 4000}
+                    ]
+                }
+            }
+        }
+        
+        api = QueryApi()
+        result = await api.get_field_statistics(
+            mock_client,
+            field="go.CC",
+            species="human",
+            size=50
+        )
+        
+        assert result["success"] is True
+        assert result["field"] == "go.CC"
+        
+        mock_client.get.assert_called_with(
+            "query",
+            params={
+                "q": "*",
+                "facets": "go.CC",
+                "facet_size": 50,
+                "size": 0,
+                "species": "human"
+            }
+        )
