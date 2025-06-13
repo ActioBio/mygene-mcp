@@ -56,7 +56,6 @@ A Model Context Protocol (MCP) server that exposes the [MyGene.info](https://myg
 
 2. **Setup**
    ```bash
-   git clone https://github.com/nickzren/mygene-mcp.git
    cd mygene-mcp
    uv venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
