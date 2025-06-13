@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server that exposes the [MyGene.info](https://myg
 ## Features
 
 ### Core Capabilities
+
 - **Gene Search**: Query genes by symbol, name, Entrez ID, Ensembl ID, or other identifiers
 - **Gene Annotations**: Retrieve comprehensive gene information from multiple sources
 - **Expression Queries**: Search genes by tissue expression or retrieve expression profiles
@@ -46,25 +47,38 @@ A Model Context Protocol (MCP) server that exposes the [MyGene.info](https://myg
 - **SMART**: Protein domains
 - **PANTHER**: Gene function classification
 
-## Installation
+## Quick Start
 
-```bash
-git clone https://github.com/nickzren/mygene-mcp
-cd mygene-mcp
-mamba env create -f environment.yml
-mamba activate mygene-mcp
-```
+1. **Install UV**
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+2. **Setup**
+   ```bash
+   git clone https://github.com/nickzren/mygene-mcp.git
+   cd mygene-mcp
+   uv venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   uv pip install -e .
+   ```
+
+3. **Configure Claude Desktop**
+   ```bash
+   python scripts/configure_claude.py
+   ```
+   Then restart Claude Desktop.
 
 ## Usage
 
-#### As an MCP Server
+#### Running the Server
 
 ```bash
 mygene-mcp
 ```
 
-#### Configure with Claude Desktop
+#### Development
 
 ```bash
-python scripts/configure_claude.py
+pytest tests/ -v
 ```
