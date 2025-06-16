@@ -70,9 +70,7 @@ pip install mcpm
 ### 3. Setup the MCP Server
 ```bash
 cd mygene-mcp
-uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-uv pip install -e .
+uv sync
 ```
 
 ### 4. Add the Server to Claude Desktop
@@ -83,18 +81,9 @@ cd mygene-mcp
 # Set Claude as the target client
 mcpm target set @claude-desktop
 
-# Get the full Python path from your virtual environment
-# On macOS/Linux:
-source .venv/bin/activate
-PYTHON_PATH=$(which python)
-
-# On Windows (PowerShell):
-# .venv\Scripts\activate
-# $PYTHON_PATH = (Get-Command python).Path
-
 # Add the MyGene MCP server
 mcpm import stdio mygene \
-  --command "$PYTHON_PATH" \
+  --command "$(uv run which python)" \
   --args "-m mygene_mcp.server"
 ```
 Then restart Claude Desktop.
@@ -104,11 +93,11 @@ Then restart Claude Desktop.
 #### Running the Server
 
 ```bash
-mygene-mcp
+uv run python -m mygene_mcp.server
 ```
 
 #### Development
 
 ```bash
-pytest tests/ -v
+uv run pytest tests/ -v
 ```

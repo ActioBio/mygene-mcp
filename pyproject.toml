@@ -1,15 +1,7 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
 name = "mygene-mcp"
-version = "0.2.0"
-description = "Model Context Protocol server for MyGene.info API with comprehensive gene data tools"
-readme = "README.md"
+version = "0.1.0"
 requires-python = ">=3.12"
-license = {text = "MIT"}
-authors = [{name = "Zhong Ren", email = "zhong.ren@hotmail.com"}]
 dependencies = [
     "mcp",
     "httpx",
@@ -18,11 +10,12 @@ dependencies = [
     "pytest-asyncio",
 ]
 
-[project.scripts]
-mygene-mcp = "mygene_mcp.server:main"
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/mygene_mcp"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
